@@ -1,11 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<meta charset="ISO-8859-1">
-<title>Pagina zuada</title>
+<!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" />
+<!--Import materialize.css-->
+<link type="text/css" rel="stylesheet"
+	href="materialize/css/materialize.min.css" media="screen,projection" />
+
+<!--Let browser know website is optimized for mobile-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EventosApp</title>
 </head>
 <body>
-<h3>Hello, world!</h3>
-<p>Raimundo!</p>
+
+	<h1>Lista de Eventos</h1>
+	<h3>
+		<a href="/cadastrarEvento" class="waves-effect waves-light btn"><i
+			class="material-icons left">add_circle_outline</i>Cadastrar Evento</a>
+	</h3>
+	<table class="container">
+		<thead>
+			<th>Nome</th>
+			<th>Local</th>
+			<th>Data</th>
+			<th>Horario</th>
+		</thead>
+		<tr th:each="evento : ${evento}">
+			<td><span th:text="${evento.nome}"></span></td>
+			<td><span th:text="${evento.local}"></span></td>
+			<td><span th:text="${evento.data}"></span></td>
+			<td><span th:text="${evento.horario}"></span></td>
+		</tr>
+	</table>
+
+	<!--JavaScript at end of body for optimized loading-->
+	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 </body>
 </html>
