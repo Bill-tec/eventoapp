@@ -31,7 +31,7 @@ public class EventoController {
 	}
 
 	@RequestMapping(value = "/cadastrarEvento", method = RequestMethod.POST)
-	public String form(Evento evento, BindingResult result, RedirectAttributes attributes) {
+	public String form(@Valid Evento evento, BindingResult result, RedirectAttributes attributes) {
 		if(result.hasErrors()) {
 			attributes.addFlashAttribute("mensagem", "Verifique os campos!");
 			return "redirect:/cadastrarEvento";
@@ -50,7 +50,7 @@ public class EventoController {
 	}
 
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.GET)
-	public ModelAndView detalhesEventoGet(@PathVariable("codigo") long codigo) {
+	public ModelAndView detalhesEvento(@PathVariable("codigo") long codigo) {
 		Evento evento = er.findByCodigo(codigo);
 		ModelAndView mv = new ModelAndView("evento/detalhesEvento");
 		mv.addObject("evento", evento);
@@ -58,6 +58,12 @@ public class EventoController {
 		Iterable<Convidado> convidados = cr.findByEvento(evento);
 		mv.addObject("convidados", convidados);
 		return mv;
+	}
+	@RequestMapping("/deletarEvento")
+	public String deletarEvento(long codigo) {
+		Evento evento = er.findByCodigo(codigo);
+		er.delete(evento);
+		return "redirect:/eventos";
 	}
 
 	@RequestMapping(value="/{codigo}", method=RequestMethod.POST)
@@ -72,6 +78,15 @@ public class EventoController {
 			attributes.addFlashAttribute("mensagem", "Convidado adicionado com sucesso!");
 			return "redirect:/{codigo}";
 		
+	}
+	@RequestMapping("/deletarConvidado")
+	public String deletarConvidado(long codigoConvidado) {
+		Convidado convidado = cr.findByCodigo(codigoConvidado);
+		cr.delete(convidado);
+		
+		Evento evento = convidado.getEvento();
+		String codigo = ""+evento.getCodigo();
+		return "redirect:/"+ codigo;
 	}
 
 }
